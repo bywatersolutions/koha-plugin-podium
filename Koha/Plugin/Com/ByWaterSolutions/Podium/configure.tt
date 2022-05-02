@@ -23,13 +23,9 @@
       </div>
 
       <div class="form-group">
-        <label for="api_mapping">API Mapping</label>
-        <textarea name="api_mapping" class="form-control" rows=10>[% api_mapping %]</textarea>
-        <small class="form-text text-muted">Lines should be in the format <em>LETTER_CODE: API URL</em></small>
-        <small class="form-text text-muted">e.g.<pre>
-CHECKIN: https://api.podium.com/api/v1/webhook/7e246757-0d62-4y14-a71d-ae8f43a9z3432
-CHECKOUT: https://api.podium.com/api/v1/webhook/39028550-4135-4x4f-a306-edb1de9ze9f8
-        </pre></small>
+        <label for="api_endpoint">API Endpoint</label>
+        <input type="text" name="api_endpoint" class="form-control" value="[% api_endpoint %]">
+        <small class="form-text text-muted">API endpoint  provided by Podium</small>
       </div>
 
       <button type="submit" class="btn btn-default">Submit</button>

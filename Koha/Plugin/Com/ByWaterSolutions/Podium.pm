@@ -65,7 +65,7 @@ sub configure {
         ## Grab the values we already have for our settings, if any exist
         $template->param(
             location_id => $self->retrieve_data('location_id'),
-            api_mapping => $self->retrieve_data('api_mapping'),
+            api_endpoint => $self->retrieve_data('api_endpoint'),
         );
 
         $self->output_html( $template->output() );
@@ -74,7 +74,7 @@ sub configure {
         $self->store_data(
             {
                 location_id => $cgi->param('location_id'),
-                api_mapping => $cgi->param('api_mapping'),
+                api_endpoint => $cgi->param('api_endpoint'),
             }
         );
         $self->go_home();
@@ -138,14 +138,7 @@ sub before_send_messages {
         warn "Failed to load Podium Location ID!";
     }
 
-    my $api_mapping;
-    try {
-        $api_mapping = YAML::Load( $self->retrieve_data('api_mapping') );
-    }
-    catch {
-        warn "Failed to load Podium API Mapping!";
-        return;
-    }
+    my $api_endpoint =  $self->retrieve_data('api_endpoint')
 
     my $messages = Koha::Notice::Messages->search(
         {
@@ -166,24 +159,18 @@ sub before_send_messages {
             next;
         }
 
-        my $api = $api_mapping->{ $m->letter_code };
-
-        unless ($api) {
-            warn sprintf( "Podium: Skipping %s, no mapping found for %s!",
-                $m->id, $m->letter_code );
-            next;
-        }
-
         my $json = encode_json(
             {
-                "locationId"   => $location_id,
-                "customerName" => "John Doe",
-                "phone"        => "1234567890",
-                "messageBody"  => "Message Template Here",
+                "locationId"        => $location_id,
+                "customerFirstName" => $patron->firstname,
+                "customerLastName"  => $patron->surname,
+                "phone"             => $patron->phone,
+                "code"              => $m->letter_code,
+                "messageBody"       => $m->content,
             }
         );
 
-        my $req = HTTP::Request->new( 'POST', $api );
+        my $req = HTTP::Request->new( 'POST', $api_endpoint );
         $req->header( 'Content-Type' => 'application/json' );
         $req->content($json);
 
