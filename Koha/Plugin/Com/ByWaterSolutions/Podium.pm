@@ -138,7 +138,7 @@ sub before_send_messages {
         warn "Failed to load Podium Location ID!";
     }
 
-    my $api_endpoint =  $self->retrieve_data('api_endpoint')
+    my $api_endpoint =  $self->retrieve_data('api_endpoint');
 
     my $messages = Koha::Notice::Messages->search(
         {
