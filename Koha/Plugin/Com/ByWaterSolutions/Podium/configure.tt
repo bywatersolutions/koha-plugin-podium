@@ -18,7 +18,7 @@
 
       <div class="form-group">
         <label for="location_id">Location ID</label>
-        <input type="text" name="host" class="form-control" value="[% location_id %]">
+        <input type="text" name="location_id" class="form-control" value="[% location_id %]">
         <small class="form-text text-muted">Location ID provided by Podium</small>
       </div>
 
