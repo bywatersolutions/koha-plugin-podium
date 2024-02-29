@@ -164,7 +164,7 @@ sub before_send_messages {
                 "locationId"        => $location_id,
                 "customerFirstName" => $patron->firstname,
                 "customerLastName"  => $patron->surname,
-                "phone"             => $patron->phone,
+                "phone"             => $patron->smsalertnumber,
                 "code"              => $m->letter_code,
                 "messageBody"       => $m->content,
             }
